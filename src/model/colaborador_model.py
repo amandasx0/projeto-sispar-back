@@ -22,5 +22,5 @@ class Colaborador(database.Model): #mapear e criar a tabela
     def to_dict(self) -> dict:
          return {
             'email': self.email,
-           'senha': self.senha
+            'senha': self.senha
         }
