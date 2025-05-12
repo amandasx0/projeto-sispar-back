@@ -47,6 +47,7 @@ def pegar_reembolson():
     reembolsos = Reembolso.query.all()
     
     dados_reembolso = [{
+        'id': reembolso.id,
         'nome': reembolso.nome,
         'empresa': reembolso.empresa,
         'prestacao': reembolso.prestacao,
@@ -65,3 +66,44 @@ def pegar_reembolson():
     } for reembolso in reembolsos]
     
     return jsonify(dados_reembolso), 200
+
+@bp_reembolso.route('/deletar/<int:id_reembolso>', methods=['DELETE'])
+def deletar_reembolso(id_reembolso):
+    reembolso = Reembolso.query.get(id_reembolso)
+
+    if not reembolso:
+        return jsonify({'erro': 'Reembolso não encontrado'}), 404
+
+    database.session.delete(reembolso)
+    database.session.commit()
+    return jsonify({'mensagem': 'Reembolso deletado com sucesso'}), 200
+
+@bp_reembolso.route('/buscar-prestacao/<int:numero_prestacao>', methods=['GET'])
+def buscar_prestacao(numero_prestacao):
+    reembolsos = Reembolso.query.filter_by(prestacao=numero_prestacao).all()
+    
+    if not reembolsos:
+        return jsonify({'mensagem': 'Nenhum reembolso encontrado'}), 404
+    
+    dados_prestacao = [{
+        'id': reembolso.id,
+        'nome': reembolso.nome,
+        'empresa': reembolso.empresa,
+        'prestacao': reembolso.prestacao,
+        'data': reembolso.data,
+        'descricao': reembolso.descricao,
+        'tipo_despesa': reembolso.tipo_despesa,
+        'ctr_custo': reembolso.ctr_custo,
+        'ordem': reembolso.ordem,
+        'div': reembolso.div,
+        'pep': reembolso.pep,
+        'moeda': reembolso.moeda,
+        'distancia': reembolso.distancia,
+        'valor_km': reembolso.valor_km,
+        'valor_faturado': reembolso.valor_faturado,
+        'despesa': reembolso.despesa
+    } for reembolso in reembolsos]
+    
+    return jsonify(dados_prestacao), 200
+    
+    
