@@ -1,5 +1,5 @@
-from flask import Flask
-from flask_cors import CORS
+from flask import Flask # type: ignore
+from flask_cors import CORS # type: ignore
 from src.controller.colaborador_controller import bp_colaborador
 from src.controller.reembolso_controller import bp_reembolso
 from src.model import database
