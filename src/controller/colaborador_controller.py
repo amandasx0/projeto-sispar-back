@@ -83,5 +83,5 @@ def login():
    
     colaborador = colaborador.to_dict()
     
-    if email == colaborador.get('email') and colaborador.get('senha'):
+    if email == colaborador.get('email') and checar_senha(senha, colaborador.get('senha')):
         return jsonify({'messagem': 'Login realizado com sucesso'}), 200
