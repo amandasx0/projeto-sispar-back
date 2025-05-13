@@ -82,14 +82,18 @@ def login():
         database.select(Colaborador).where(Colaborador.email == email)
     ).scalar()
     
-    print(colaborador)
-
-    
     if not colaborador:
         return jsonify({'messagem': 'Email ou senha incorretos'}), 404
    
     colaborador = colaborador.to_dict()
-    print(colaborador)
-    
-    if email == colaborador.get('email') and checar_senha(senha, colaborador.get('senha')):
+
+    # Corrigindo a leitura da senha
+    senha_hash = colaborador.get('senha')
+
+    if isinstance(senha_hash, bytes):
+        senha_hash = senha_hash.decode('utf-8')
+
+    if email == colaborador.get('email') and checar_senha(senha, senha_hash):
         return jsonify({'messagem': 'Login realizado com sucesso'}), 200
+
+    return jsonify({'messagem': 'Email ou senha incorretos'}), 401
