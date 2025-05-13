@@ -3,6 +3,7 @@ from src.model.colaborador_model import Colaborador
 from src.model import database
 from src.security.security import hash_senha, checar_senha
 from flasgger import swag_from
+import binascii
 
 bp_colaborador = Blueprint('colaborador', __name__, url_prefix='/colaborador')
 
@@ -87,11 +88,19 @@ def login():
    
     colaborador = colaborador.to_dict()
 
-    # Corrigindo a leitura da senha
     senha_hash = colaborador.get('senha')
 
     if isinstance(senha_hash, bytes):
         senha_hash = senha_hash.decode('utf-8')
+
+    elif isinstance(senha_hash, str) and senha_hash.startswith('\\x'):
+        try:
+            senha_hash = binascii.unhexlify(senha_hash[2:]).decode('utf-8')
+        except Exception as e:
+            print('Erro ao decodificar hash da senha:', e)
+            return jsonify({'messagem': 'Erro ao processar a senha'}), 500
+    
+    print(colaborador)
 
     if email == colaborador.get('email') and checar_senha(senha, senha_hash):
         return jsonify({'messagem': 'Login realizado com sucesso'}), 200
