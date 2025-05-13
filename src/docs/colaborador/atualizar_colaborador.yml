@@ -1,0 +1,37 @@
+tags:
+  - Colaborador
+description: Endpoint para atualizar os dados de um colaborador
+
+parameters:
+  - in: path
+    name: id_colaborador
+    required: true
+    type: integer
+    description: ID do colaborador a ser atualizado
+
+  - in: body
+    name: corpo
+    required: true
+    schema:
+      type: object
+      properties:
+        nome:
+          type: string
+        email:
+          type: string
+        senha:
+          type: string
+        cargo:
+          type: string
+        salario:
+          type: number
+
+responses:
+  200:
+    description: Dados do colaborador atualizados com sucesso
+  404:
+    description: Colaborador não encontrado
+  400:
+    description: Erro ao atualizar dados do colaborador
+  500:
+    description: Erro interno no servidor

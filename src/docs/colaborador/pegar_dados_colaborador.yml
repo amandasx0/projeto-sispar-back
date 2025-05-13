@@ -1,0 +1,29 @@
+tags:
+  - Colaborador
+description: Endpoint para buscar todos os colaboradores cadastrados
+
+responses:
+  200:
+    description: Lista de colaboradores retornada com sucesso
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            example: 1
+          nome:
+            type: string
+            example: João da Silva
+          cargo:
+            type: string
+            example: Analista de Sistemas
+          email:
+            type: string
+            example: joao.silva@empresa.com
+  400:
+    description: Requisição inválida
+  500:
+    description: Erro interno no servido
+            

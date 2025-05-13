@@ -1,0 +1,56 @@
+tags:
+  - Reembolso
+description: Retorna a lista de reembolsos. Pode ser filtrado por status usando o parâmetro de query.
+
+parameters:
+  - name: status
+    in: query
+    required: false
+    description: 'Filtrar reembolsos por status (ex: "Solicitado", "Aprovado", etc.)'
+    type: string
+
+responses:
+  200:
+    description: Lista de reembolsos retornada com sucesso
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          nome:
+            type: string
+          empresa:
+            type: string
+          prestacao:
+            type: string
+          data:
+            type: string
+            format: date
+          descricao:
+            type: string
+          tipo_despesa:
+            type: string
+          ctr_custo:
+            type: string
+          ordem:
+            type: string
+          div:
+            type: string
+          pep:
+            type: string
+          moeda:
+            type: string
+          distancia:
+            type: number
+          valor_km:
+            type: number
+          valor_faturado:
+            type: number
+          despesa:
+            type: number
+          status:
+            type: string
+  500:
+    description: Erro interno no servidor

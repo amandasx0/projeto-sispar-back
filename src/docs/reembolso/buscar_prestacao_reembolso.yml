@@ -1,0 +1,62 @@
+tags:
+  - Reembolso
+description: Endpoint para buscar reembolsos por número de prestação
+
+parameters:
+  - in: path
+    name: numero_prestacao
+    required: true
+    type: integer
+    description: Número da prestação que será buscada
+
+responses:
+  200:
+    description: Lista de reembolsos encontrados
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          nome:
+            type: string
+          empresa:
+            type: string
+          prestacao:
+            type: integer
+          data:
+            type: string
+            format: date
+          descricao:
+            type: string
+          tipo_despesa:
+            type: string
+          ctr_custo:
+            type: string
+          ordem:
+            type: string
+          div:
+            type: string
+          pep:
+            type: string
+          moeda:
+            type: string
+          distancia:
+            type: number
+          valor_km:
+            type: number
+          valor_faturado:
+            type: number
+          despesa:
+            type: number
+  404:
+    description: Nenhum reembolso encontrado
+    schema:
+      type: object
+      properties:
+        mensagem:
+          type: string
+          example: Nenhum reembolso encontrado
+  500:
+    description: Erro interno no servidor

@@ -1,0 +1,31 @@
+tags:
+  - Reembolso
+description: Endpoint para enviar reembolsos com status "Solicitados" para análise
+
+parameters:
+  - in: body
+    name: corpo
+    required: false
+    schema:
+      type: object
+      description: Nenhum dado é necessário no corpo da requisição
+
+responses:
+  200:
+    description: Reembolsos enviados para análise com sucesso
+    schema:
+      type: object
+      properties:
+        mensagem:
+          type: string
+          example: Reembolsos enviados para análise com sucesso.
+  404:
+    description: Nenhum reembolso com status "Solicitados" encontrado
+    schema:
+      type: object
+      properties:
+        mensagem:
+          type: string
+          example: Nenhum reembolso com status "Solicitados" encontrado.
+  500:
+    description: Erro interno no servidor

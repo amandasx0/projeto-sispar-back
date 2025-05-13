@@ -1,0 +1,70 @@
+tags:
+  - Reembolso
+description: Endpoint para cadastrar um novo reembolso
+
+parameters:
+  - in: body
+    name: corpo
+    required: true
+    schema:
+      type: object
+      properties:
+        nome:
+          type: string
+        empresa:
+          type: string
+        prestacao:
+          type: string
+        data:
+          type: string
+          example: "31/12/2024"
+          description: Data no formato DD/MM/YYYY
+        descricao:
+          type: string
+        tipo_despesa:
+          type: string
+        ctr_custo:
+          type: string
+        ordem:
+          type: string
+        div:
+          type: string
+        pep:
+          type: string
+        moeda:
+          type: string
+        distancia:
+          type: number
+        valor_km:
+          type: number
+        valor_faturado:
+          type: number
+        despesa:
+          type: number
+        status:
+          type: string
+      required:
+        - nome
+        - empresa
+        - prestacao
+        - data
+        - descricao
+        - tipo_despesa
+        - ctr_custo
+        - ordem
+        - div
+        - pep
+        - moeda
+        - distancia
+        - valor_km
+        - valor_faturado
+        - despesa
+        - status
+
+responses:
+  201:
+    description: Reembolso cadastrado com sucesso
+  400:
+    description: Erro de validação ou formato de data inválido
+  500:
+    description: Erro interno no servidor

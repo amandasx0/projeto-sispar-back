@@ -2,10 +2,12 @@ from datetime import datetime
 from flask import Blueprint, request, jsonify
 from src.model.reembolso_model import Reembolso
 from src.model import database
+from flasgger import swag_from
 
 bp_reembolso = Blueprint('reembolso', __name__, url_prefix='/reembolso')
 
 @bp_reembolso.route('/cadastrar', methods=['POST'])
+@swag_from('../docs/reembolso/cadastrar_reembolso.yml')
 def cadastrar_reembolso():
     dados_request = request.get_json()
     
@@ -33,7 +35,8 @@ def cadastrar_reembolso():
         distancia = dados_request['distancia'],
         valor_km = dados_request['valor_km'],
         valor_faturado = dados_request['valor_faturado'],
-        despesa = dados_request['despesa']
+        despesa = dados_request['despesa'],
+        status = dados_request['status']
     )
     
     database.session.add(novo_reembolso) # INSERT INTO tb_colaborado(nome, email, senha, cargo, salario) VALUES('nome','email','senha','cargo','salario')
@@ -43,8 +46,14 @@ def cadastrar_reembolso():
     
     
 @bp_reembolso.route('/pegar-reembolsos', methods=['GET'])
+@swag_from('../docs/reembolso/pegar_reembolsos.yml')
 def pegar_reembolson():
-    reembolsos = Reembolso.query.all()
+    status_param = request.args.get('status')
+
+    if status_param:
+        reembolsos = Reembolso.query.filter_by(status=status_param).all()
+    else:
+        reembolsos = Reembolso.query.all()
     
     dados_reembolso = [{
         'id': reembolso.id,
@@ -62,12 +71,29 @@ def pegar_reembolson():
         'distancia': reembolso.distancia,
         'valor_km': reembolso.valor_km,
         'valor_faturado': reembolso.valor_faturado,
-        'despesa': reembolso.despesa
+        'despesa': reembolso.despesa,
+        'status': reembolso.status
     } for reembolso in reembolsos]
     
     return jsonify(dados_reembolso), 200
 
+@bp_reembolso.route('/enviar-para-analise', methods=['POST'])
+@swag_from('../docs/reembolso/enviar_para_analise_reembolso.yml')
+def enviar_para_analise():
+    reembolso = Reembolso.query.filter_by(status="Solicitados").all()
+    
+    if not reembolso:
+         return jsonify({'mensagem': 'Nenhum reembolso com status "Solicitados" encontrado.'}), 404
+     
+    for r in reembolso:
+            r.status = 'Em Análise'
+
+    database.session.commit()
+
+    return jsonify({'mensagem': 'Reembolsos enviados para análise com sucesso.'}), 200
+
 @bp_reembolso.route('/deletar/<int:id_reembolso>', methods=['DELETE'])
+@swag_from('../docs/reembolso/deletar_reembolso.yml')
 def deletar_reembolso(id_reembolso):
     reembolso = Reembolso.query.get(id_reembolso)
 
@@ -79,6 +105,7 @@ def deletar_reembolso(id_reembolso):
     return jsonify({'mensagem': 'Reembolso deletado com sucesso'}), 200
 
 @bp_reembolso.route('/buscar-prestacao/<int:numero_prestacao>', methods=['GET'])
+@swag_from('../docs/reembolso/buscar_prestacao_reembolso.yml')
 def buscar_prestacao(numero_prestacao):
     reembolsos = Reembolso.query.filter_by(prestacao=numero_prestacao).all()
     

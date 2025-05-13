@@ -7,6 +7,7 @@ from flasgger import swag_from
 bp_colaborador = Blueprint('colaborador', __name__, url_prefix='/colaborador')
 
 @bp_colaborador.route('/pegar-dados', methods=['GET'])
+@swag_from('../docs/colaborador/pegar_dados_colaborador.yml')
 def pegar_dados(): 
     colaboradores = Colaborador.query.all()  
 
@@ -42,6 +43,7 @@ def cadastrar_colaborador():
     return jsonify({'message': 'Colaborador cadastrado com sucesso'}), 201
 
 @bp_colaborador.route('/atualizar/<int:id_colaborador>', methods=['PUT'])
+@swag_from('../docs/colaborador/atualizar_colaborador.yml')
 def atualizar_dados_colaborador(id_colaborador):
     dados_colaborador = request.get_json()
 
@@ -66,6 +68,7 @@ def atualizar_dados_colaborador(id_colaborador):
 
 
 @bp_colaborador.route('/login', methods=['POST'])
+@swag_from('../docs/colaborador/login_colaborador.yml')
 def login():
     dados_requisicao = request.get_json()
     
@@ -86,6 +89,7 @@ def login():
         return jsonify({'messagem': 'Email ou senha incorretos'}), 404
    
     colaborador = colaborador.to_dict()
+    print(colaborador)
     
     if email == colaborador.get('email') and checar_senha(senha, colaborador.get('senha')):
         return jsonify({'messagem': 'Login realizado com sucesso'}), 200

@@ -21,8 +21,9 @@ class Reembolso(database.Model):
     valor_km = Column(DECIMAL(10, 2))
     valor_faturado = Column(DECIMAL(10, 2))
     despesa = Column(DECIMAL(10, 2))
+    status = Column(String(100))
     
-    def __init__(self, nome, empresa, prestacao, data, descricao, tipo_despesa, ctr_custo, ordem, div, pep, moeda, distancia, valor_km, valor_faturado, despesa):
+    def __init__(self, nome, empresa, prestacao, data, descricao, tipo_despesa, ctr_custo, ordem, div, pep, moeda, distancia, valor_km, valor_faturado, despesa, status):
         self.nome = nome
         self.empresa = empresa
         self.prestacao = prestacao
@@ -38,6 +39,7 @@ class Reembolso(database.Model):
         self.valor_km = valor_km
         self.valor_faturado = valor_faturado
         self.despesa = despesa
+        self.status = status
 
         
         
